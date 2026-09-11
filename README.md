@@ -6,42 +6,6 @@ Bake Forger takes an existing high-poly GLB and an already-prepared low-poly GLB
 
 It is built for the part of the asset pipeline that happens **after** your low-poly mesh is ready: baking clean game-ready texture maps and exporting the baked GLB.
 
-## 🚀 SUPPORT MOSTAADTECH
-
-### ❤️ Enjoying this project / workflow?
-
-I’m **MostAadTech**, I create FREE ComfyUI workflows, local AI tools, 3D pipelines, and open-source projects.
-
-If this project or workflow helped you, **please consider following me or supporting my work**. It helps me keep building, testing, and releasing more free tools and workflows.
-
----
-
-## 💜 Support Me on Patreon
-
-👉 **[Support MostAadTech on Patreon](https://www.patreon.com/cw/MostafaAwad/membership)**
-
-Your support helps me spend more time developing **FREE AI tools, ComfyUI workflows, and 3D pipelines**.
-
----
-
-## 🌐 Follow MostAadTech
-
-* ▶️ **[YouTube](https://www.youtube.com/@MostAadTech)** — Tutorials, workflows & AI projects
-* 📸 **[Instagram](https://www.instagram.com/mostaadtech/)** — Projects, updates & behind the scenes
-* 𝕏 **[X / Twitter](https://x.com/MostAadTech)** — Updates, releases & experiments
-* 💻 **[GitHub](https://github.com/Mstafa-awad)** — Open-source projects & code
-
----
-
-### ⭐ One Follow Helps
-
-**Follow • Star • Share • Support**
-
-Every follow, GitHub star, share, and Patreon supporter helps me continue making **FREE tools for the AI community.**
-
-**Thank you for supporting MostAadTech! ❤️**
-
-
 ## Why Bake Forger exists
 
 Bake Forger was **enhanced and substantially reworked from the baking portion of** the MIT-licensed `hp_to_lp_bake.py` from [mdj128/aeon-unity-tools](https://github.com/mdj128/aeon-unity-tools/blob/main/hp_to_lp_bake.py).
@@ -230,3 +194,39 @@ External software is not bundled with this repository. When you install or redis
 https://github.com/mdj128/aeon-unity-tools/blob/main/hp_to_lp_bake.py
 
 Bake Forger uses that work as a reference/source for the original baking stage, then extends the workflow for ComfyUI automation, adaptive coverage, fallback recovery, map management, material handling, and production-oriented file I/O.
+
+
+## 🚀 SUPPORT MOSTAADTECH
+
+### ❤️ Enjoying this project / workflow?
+
+I’m **MostAadTech**, I create FREE ComfyUI workflows, local AI tools, 3D pipelines, and open-source projects.
+
+If this project or workflow helped you, **please consider following me or supporting my work**. It helps me keep building, testing, and releasing more free tools and workflows.
+
+---
+
+## 💜 Support Me on Patreon
+
+👉 **[Support MostAadTech on Patreon](https://www.patreon.com/cw/MostafaAwad/membership)**
+
+Your support helps me spend more time developing **FREE AI tools, ComfyUI workflows, and 3D pipelines**.
+
+---
+
+## 🌐 Follow MostAadTech
+
+* ▶️ **[YouTube](https://www.youtube.com/@MostAadTech)** — Tutorials, workflows & AI projects
+* 📸 **[Instagram](https://www.instagram.com/mostaadtech/)** — Projects, updates & behind the scenes
+* 𝕏 **[X / Twitter](https://x.com/MostAadTech)** — Updates, releases & experiments
+* 💻 **[GitHub](https://github.com/Mstafa-awad)** — Open-source projects & code
+
+---
+
+### ⭐ One Follow Helps
+
+**Follow • Star • Share • Support**
+
+Every follow, GitHub star, share, and Patreon supporter helps me continue making **FREE tools for the AI community.**
+
+**Thank you for supporting MostAadTech! ❤️**
