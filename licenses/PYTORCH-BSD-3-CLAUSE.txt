@@ -1,0 +1,7 @@
+PyTorch — BSD 3-Clause License
+
+PyTorch is released under the BSD 3-Clause license.
+Project: https://github.com/pytorch/pytorch
+
+This package does not bundle PyTorch. See the official PyTorch repository for
+its complete current license and third-party notices.

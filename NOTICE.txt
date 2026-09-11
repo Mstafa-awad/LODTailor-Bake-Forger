@@ -1,0 +1,20 @@
+LODTailor: Bake Forger
+
+This project is an enhanced and reworked ComfyUI/Blender baking node.
+
+The baking portion was developed from the MIT-licensed hp_to_lp_bake.py in:
+https://github.com/mdj128/aeon-unity-tools/blob/main/hp_to_lp_bake.py
+
+The upstream reference is credited here as required by the MIT License. This
+project is not the upstream repository and is not represented as a verbatim
+copy. The ComfyUI integration and the extended baking, coverage, texture,
+material, process, and output handling are part of this project.
+
+External software/libraries are not bundled with this package:
+- ComfyUI: GPL-3.0
+- Blender: GPL-3.0
+- PyTorch: BSD-3-Clause
+- NumPy: BSD-3-Clause
+- Pillow: MIT-CMU
+
+Those projects retain their own licenses.

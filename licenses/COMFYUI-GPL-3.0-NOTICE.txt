@@ -1,0 +1,7 @@
+ComfyUI — GNU General Public License v3.0
+
+Project: https://github.com/Comfy-Org/ComfyUI
+
+Bake Forger is designed to run as a ComfyUI custom node and imports ComfyUI
+APIs. ComfyUI is not bundled in this package and remains under its own GPL-3.0
+license.

@@ -1,0 +1,12 @@
+Pillow — MIT-CMU License
+
+The Python Imaging Library (PIL) is Copyright © 1997-2011 by Secret Labs AB
+and Copyright © 1995-2011 by Fredrik Lundh and contributors.
+Pillow is the friendly PIL fork. It is Copyright © 2010 by Jeffrey 'Alex'
+Clark and contributors.
+
+Pillow is licensed under the open source MIT-CMU License.
+Project: https://github.com/python-pillow/Pillow
+
+This package does not bundle Pillow. See the official Pillow LICENSE file for
+the complete current notice.
