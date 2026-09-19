@@ -16,14 +16,36 @@ The upstream MIT license and attribution are preserved in `licenses/AEON-UNITY-T
 
 ## What was enhanced
 
-### Adaptive cage and ray coverage
+### Full PBR Map Support (Including Metallic)
+Bake Forger can independently bake/export the full standard PBR Metal-Roughness texture set required for modern game engines (Unreal, Unity, Godot):
+- Base Color
+- Tangent Normal
+- Roughness
+- **Metallic**
+- Emission
+- Ambient Occlusion
 
+Each map has its own resolution control, so you can avoid spending the same amount of memory and bake time on every texture.
+
+### Metallic Baking via "Emission Swap"
+Because Blender's Cycles renderer lacks a native `METALLIC` bake pass, Bake Forger uses a clever workaround. It temporarily reroutes the high-poly's Metallic input into an Emission shader, runs a standard `EMIT` bake pass to capture the raw data, and then flawlessly restores the original material nodes. The metallic map is correctly saved as Non-Color data to prevent gamma clipping.
+
+### High-Resolution Memory & OOM Optimizations
+Baking multiple 4K or 8K textures can easily consume tens of gigabytes of RAM and VRAM, leading to Out-Of-Memory (OOM) crashes. Bake Forger includes a heavily optimized pipeline to prevent this **without sacrificing texture quality**:
+- **Sequential Map Baking:** Maps are baked one at a time instead of allocating all texture buffers at once.
+- **Aggressive Memory Cleanup:** Temporary float buffers are freed immediately after their PNG is saved.
+- **Chunked Coverage Checks:** Normal-map coverage validation is processed in chunks to avoid massive temporary array spikes.
+- **Combined BVH Probing:** The high-poly BVH and low-poly surface sampling are only built/sampled once and reused for adaptive reach calculations.
+- **Storage-Safe Outputs:** Prevents orphaned temporary folders from filling up your SSD by using a managed output directory.
+
+### Low-Memory ComfyUI Mode
+A new `load_output_images` toggle allows ComfyUI to skip loading massive 8K PNGs into IMAGE tensors. When disabled, the node returns lightweight placeholder tensors while the full-quality baked PNGs and GLB remain safely on disk. This is a game-changer for workflows with limited system RAM or VRAM.
+
+### Adaptive cage and ray coverage
 Bake Forger can inspect the spatial relationship between the high-poly and low-poly surfaces before baking. It uses a surface-coverage probe to decide whether the normal tight bake reach is enough and can automatically expand the allowed reach when more coverage is needed.
 
 ### Smart fallback baking
-
 The fallback system supports three modes:
-
 - `AUTO` — probe first and use the wider fallback only when useful.
 - `ALWAYS` — always use the two-pass recovery workflow.
 - `NEVER` — use only the tight bake.
@@ -31,53 +53,26 @@ The fallback system supports three modes:
 This makes the node much less dependent on one hard-coded cage distance.
 
 ### Missing-texel detection and repair
+Instead of simply accepting whatever Blender leaves in the texture, Bake Forger analyzes the resulting map and identifies texels that are not covered by a valid bake. 
 
-Instead of simply accepting whatever Blender leaves in the texture, Bake Forger analyzes the resulting map and identifies texels that are not covered by a valid bake.
-
-When a fallback pass is available, missing areas are recovered from that pass. Remaining uncovered areas are filled with semantic defaults rather than being left as obvious black or invalid data.
-
-Normal, roughness, AO, emission, and base color each have their own handling.
+When a fallback pass is available, missing areas are recovered from that pass. Remaining uncovered areas are filled with semantic defaults rather than being left as obvious black or invalid data. Normal, roughness, metallic, AO, emission, and base color each have their own handling.
 
 ### Material-aware base-color baking
-
-Metallic surfaces can cause a diffuse-color bake to come out unexpectedly dark or black. Bake Forger temporarily disables the high-poly material's metallic contribution while the base-color bake runs, then restores the original material inputs and links afterward.
-
-The source material is not permanently rewritten by this operation.
-
-### Multiple map types
-
-Bake Forger can independently bake/export:
-
-- Base Color
-- Tangent Normal
-- Roughness
-- Emission
-- Ambient Occlusion
-
-Each map has its own resolution control, so you can avoid spending the same amount of memory and bake time on every texture.
+Metallic surfaces can cause a diffuse-color bake to come out unexpectedly dark or black. Bake Forger temporarily disables the high-poly material's metallic contribution while the base-color bake runs, then restores the original material inputs and links afterward. The source material is not permanently rewritten by this operation.
 
 ### Better texture encoding
-
 The node treats maps according to their intended data type:
-
-- Base Color uses sRGB handling.
-- Normal uses non-color data and a neutral normal fallback.
-- Roughness uses non-color data and a configurable material roughness fallback.
-- AO and emission get suitable semantic defaults.
+- Base Color, Emission, and AO use sRGB handling.
+- Normal, Roughness, and Metallic use non-color data and configurable material fallbacks.
 - Automatic bake margins scale with the requested texture resolution.
 
 ### GPU / CPU baking control
-
 Blender's Cycles backend can try supported GPU compute backends and can optionally include the CPU in a hybrid setup. When no usable GPU device is detected, the worker falls back to CPU baking.
 
 ### ComfyUI-native 3D input handling
-
-Bake Forger accepts ComfyUI `FILE_3D_GLB` inputs and contains handling for normal filesystem paths, File3D-style objects, byte streams, and save/export methods.
-
-The Blender work is performed in a separate background process, keeping the actual bake outside the main ComfyUI Python process.
+Bake Forger accepts ComfyUI `FILE_3D_GLB` inputs and contains handling for normal filesystem paths, File3D-style objects, byte streams, and save/export methods. The Blender work is performed in a separate background process, keeping the actual bake outside the main ComfyUI Python process.
 
 ### More useful outputs
-
 The node returns the baked GLB plus the individual image maps and a structured info string containing the bake result and warnings.
 
 ## Simple workflow
@@ -106,7 +101,6 @@ The node returns the baked GLB plus the individual image maps and a structured i
 Bake Forger is a **baking tool**, not the low-poly generator.
 
 Your low-poly input should already be:
-
 - the topology you want to ship
 - positioned correctly against the high-poly source
 - UV unwrapped
@@ -116,10 +110,10 @@ The high-poly mesh supplies the detail. The low-poly mesh receives it.
 ## Texture outputs
 
 The node exposes separate outputs for:
-
 - `base_color`
 - `normal`
 - `roughness`
+- `metallic`
 - `emission`
 - `ao`
 - `baked_glb`
@@ -160,6 +154,7 @@ Prefer GPU Baking       = True
 Hybrid CPU/GPU          = True
 Fallback Bake Mode      = AUTO
 Auto Bake Margin        = True
+Load Output Images      = True  (Set to False if you only need the GLB/PNG files and want to save ComfyUI RAM)
 ```
 
 Then enable only the texture maps you actually need and choose their resolutions.
